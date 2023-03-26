@@ -1,6 +1,7 @@
 package com.example.microgram.service;
 
 import com.example.microgram.dao.UserDao;
+import com.example.microgram.dto.UserDTO;
 import com.example.microgram.entity.User;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,21 +40,22 @@ public class UserService {
         return DriverManager.getConnection(url);
     }
 
-    public String getDataSourceConn(){
+    public String getDataSourceConn() {
         DataSource dataSource = getDataSource();
-        try{Connection connection = dataSource.getConnection();
-            if (connection.isValid(1)){
+        try {
+            Connection connection = dataSource.getConnection();
+            if (connection.isValid(1)) {
                 return "All is ok";
-            }else {
+            } else {
                 throw new SQLException();
             }
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             return e.getMessage();
         }
     }
 
-    private DataSource getDataSource(){
+    private DataSource getDataSource() {
         HikariConfig config = new HikariConfig();
         config.setUsername("postgres");
         config.setPassword("qwerty");
@@ -120,18 +123,60 @@ public class UserService {
         }
     }
 
-    public List<User> getListUsers(){
-        return userDao.getUsers();
-    }
-    public List<User> getByName(String name){
-        return userDao.findUserByName(name);
+    public List<UserDTO> getListOfUsers() {
+        var userList = userDao.getUsers();
+        return userList.stream().map(UserDTO::from).collect(Collectors.toList());
     }
 
-    public List<User> getByEmail(String email){
-        return userDao.findUserByEmail(email);
+    public boolean userExists(String name) {
+        List<UserDTO> list = getListOfUsers();
+        for (var user : list) {
+            if (user.getName().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public List<User> getByAccount(String account){
-        return userDao.findUserByAccount(account);
+    public boolean checkUserForLogin(String email, String password) {
+        var list = userDao.getUsers();
+        for (var user : list) {
+            if (user.getEmail().equalsIgnoreCase(email) &&
+                    user.getPassword().equalsIgnoreCase(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public List<UserDTO> findByName(String name) {
+        var userList = userDao.findUserByName(name);
+        return userList.stream().map(UserDTO::from).collect(Collectors.toList());
+    }
+
+
+    public List<UserDTO> findByEmail(String email) {
+        var userList = userDao.findUserByEmail(email);
+        return userList.stream().map(UserDTO::from).collect(Collectors.toList());
+    }
+
+    public List<UserDTO> findByAccount(String account) {
+        var userList = userDao.findUserByAccount(account);
+        return userList.stream().map(UserDTO::from).collect(Collectors.toList());
+    }
+
+    public UserDTO registerNewUser(UserDTO userDTO, String password) {
+        var user = User.builder()
+                .name(userDTO.getName())
+                .account(userDTO.getAccount())
+                .email(userDTO.getEmail())
+                .password(password)
+                .counterPublication(0)
+                .counterFollower(0)
+                .counterFollowing(0)
+                .build();
+        userDao.save(user);
+        return UserDTO.from(userDao.findUserByEmail(user.getEmail()).get());
     }
 }
