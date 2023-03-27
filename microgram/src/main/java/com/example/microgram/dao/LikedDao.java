@@ -17,7 +17,7 @@ import java.util.List;
 public class LikedDao extends BaseDao {
 
     public LikedDao(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        super(jdbcTemplate, namedParameterJdbcTemplate);
+        super(jdbcTemplate);
     }
 
     @Override

@@ -6,7 +6,10 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -14,12 +17,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-
 public class UserDao extends BaseDao {
-
-    public UserDao(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        super(jdbcTemplate, namedParameterJdbcTemplate);
-    }
+    private final PasswordEncoder encoder;
+        public UserDao(JdbcTemplate jdbcTemplate, PasswordEncoder encoder) {
+        super(jdbcTemplate);
+            this.encoder = encoder;
+        }
 
     @Override
     public void createTable() {
@@ -32,7 +35,9 @@ public class UserDao extends BaseDao {
                 "    password        text,\n" +
                 "    counter_publication int,\n" +
                 "    counter_follower int,\n" +
-                "    counter_following int\n" +
+                "    counter_following int,\n" +
+                "    role text,\n" +
+                "    enabled boolean default true\n" +
                 ");");
     }
 
@@ -53,8 +58,8 @@ public class UserDao extends BaseDao {
 
     public void save(User user) {
         String sql = "insert into usr(name, account, email, password, counter_publication, " +
-                "counter_follower, counter_following) " +
-                "values(?,?,?,?,?,?,?)";
+                "counter_follower, counter_following, role, enabled) " +
+                "values(?,?,?,?,?,?,?,?,?)";
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, user.getName());
@@ -64,6 +69,8 @@ public class UserDao extends BaseDao {
             ps.setInt(5, user.getCounterPublication());
             ps.setInt(6, user.getCounterFollower());
             ps.setInt(7, user.getCounterFollowing());
+            ps.setString(8, user.getRole());
+            ps.setBoolean(9, user.isEnabled());
             return ps;
         });
     }

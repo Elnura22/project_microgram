@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Component
 public class FollowDao extends BaseDao {
     public FollowDao(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        super(jdbcTemplate, namedParameterJdbcTemplate);
+        super(jdbcTemplate);
     }
 
     @Override

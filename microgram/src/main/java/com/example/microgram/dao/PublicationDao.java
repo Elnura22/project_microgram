@@ -17,7 +17,7 @@ import java.util.List;
 @Component
 public class PublicationDao extends BaseDao {
     public PublicationDao(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        super(jdbcTemplate, namedParameterJdbcTemplate);
+        super(jdbcTemplate);
     }
 
     @Override
