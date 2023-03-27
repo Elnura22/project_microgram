@@ -17,6 +17,8 @@ public class UserDTO {
                 .counterPublication(user.getCounterPublication())
                 .counterFollower(user.getCounterFollower())
                 .counterFollowing(user.getCounterFollowing())
+                .role(user.getRole())
+                .enabled(user.isEnabled())
                 .build();
     }
 
@@ -27,4 +29,6 @@ public class UserDTO {
     private java.lang.Integer counterPublication;
     private java.lang.Integer counterFollower;
     private java.lang.Integer counterFollowing;
+    private String role;
+    private boolean enabled;
 }
