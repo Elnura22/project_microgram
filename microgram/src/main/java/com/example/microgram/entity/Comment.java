@@ -1,6 +1,5 @@
 package com.example.microgram.entity;
 
-import com.example.microgram.util.Generator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
