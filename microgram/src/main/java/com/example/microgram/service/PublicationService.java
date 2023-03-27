@@ -16,13 +16,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PublicationService {
-    private Connection conn;
-    @Autowired
-    private PublicationDao publicationDao;
-
-    public PublicationService(PublicationDao publicationDao) {
-        this.publicationDao = publicationDao;
-    }
+    private final PublicationDao publicationDao;
 
 //    public List<Publication> getPublicationByUser(int id) {
 //        return publicationDao.getPublication(id);
