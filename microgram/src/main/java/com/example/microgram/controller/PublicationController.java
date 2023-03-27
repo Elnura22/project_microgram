@@ -17,10 +17,6 @@ import java.util.List;
 public class PublicationController {
     private final PublicationService service;
 
-//    @GetMapping("/publicationByUser")
-//    public ResponseEntity<List<Publication>> userByName(@RequestParam Follow follow){
-//        return new ResponseEntity<>(service.getPublicationByFollowing(follow), HttpStatus.OK);
-//    }
 
     @GetMapping("{id}")
     public ResponseEntity<List<PublicationDTO>> getList(@PathVariable int id){
