@@ -1,6 +1,9 @@
 package com.example.microgram.dao;
 
 import com.example.microgram.entity.Follow;
+import com.example.microgram.entity.Publication;
+import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -8,11 +11,12 @@ import org.springframework.stereotype.Component;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Component
 public class FollowDao extends BaseDao {
     public FollowDao(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        super(jdbcTemplate);
+        super(jdbcTemplate, namedParameterJdbcTemplate);
     }
 
     @Override
@@ -38,10 +42,19 @@ public class FollowDao extends BaseDao {
                 "values(?,?,?)";
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, follow.getFollower());
-            ps.setInt(2, follow.getFollowing());
+            ps.setLong(1, follow.getFollower());
+            ps.setLong(2, follow.getFollowing());
             ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
             return ps;
         });
+    }
+
+
+    public Optional<Follow> findById(Long id) {
+        String sql = "select * " +
+                "from follows " +
+                "where following = ?";
+        return Optional.ofNullable(DataAccessUtils.singleResult(
+                jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Follow.class), id)));
     }
 }

@@ -5,11 +5,11 @@ import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -18,11 +18,9 @@ import java.util.Optional;
 
 @Component
 public class UserDao extends BaseDao {
-    private final PasswordEncoder encoder;
-        public UserDao(JdbcTemplate jdbcTemplate, PasswordEncoder encoder) {
-        super(jdbcTemplate);
-            this.encoder = encoder;
-        }
+    public UserDao(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        super(jdbcTemplate, namedParameterJdbcTemplate);
+    }
 
     @Override
     public void createTable() {
@@ -50,6 +48,7 @@ public class UserDao extends BaseDao {
                 ps.setString(2, users.get(i).getName());
             }
 
+
             public int getBatchSize() {
                 return users.size();
             }
@@ -66,9 +65,9 @@ public class UserDao extends BaseDao {
             ps.setString(2, user.getAccount());
             ps.setString(3, user.getEmail());
             ps.setString(4, user.getPassword());
-            ps.setInt(5, user.getCounterPublication());
-            ps.setInt(6, user.getCounterFollower());
-            ps.setInt(7, user.getCounterFollowing());
+            ps.setLong(5, user.getCounterPublication());
+            ps.setLong(6, user.getCounterFollower());
+            ps.setLong(7, user.getCounterFollowing());
             ps.setString(8, user.getRole());
             ps.setBoolean(9, user.isEnabled());
             return ps;
@@ -122,6 +121,46 @@ public class UserDao extends BaseDao {
         ));
 
     }
+
+    public void update(User user) {
+        String sql = "update usr\n" +
+                "set counter_publication = ?\n" +
+                "where id = ? ";
+
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, user.getCounterPublication());
+            ps.setLong(2, user.getId());
+            return ps;
+        });
+    }
+
+    public void updateCounterFollowing(User user) {
+        String sql = "update usr\n" +
+                "set counter_following = ?\n" +
+                "where id = ? ";
+
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, user.getCounterFollowing());
+            ps.setLong(2, user.getId());
+            return ps;
+        });
+    }
+
+    public void updateCounterFollower(User user) {
+        String sql = "update usr\n" +
+                "set counter_follower = ?\n" +
+                "where id = ? ";
+
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, user.getCounterFollower());
+            ps.setLong(2, user.getId());
+            return ps;
+        });
+    }
+
 
 //    public List<User> findUserByName(String name) {
 //        String sql = "select * from customers where name =" + "'" + name + "'";

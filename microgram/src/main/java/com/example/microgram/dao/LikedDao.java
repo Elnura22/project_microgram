@@ -2,7 +2,6 @@ package com.example.microgram.dao;
 
 import com.example.microgram.entity.Liked;
 import com.example.microgram.entity.Publication;
-import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -17,7 +16,7 @@ import java.util.List;
 public class LikedDao extends BaseDao {
 
     public LikedDao(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        super(jdbcTemplate);
+        super(jdbcTemplate, namedParameterJdbcTemplate);
     }
 
     @Override
@@ -50,10 +49,15 @@ public class LikedDao extends BaseDao {
                 "values(?,?,?)";
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, like.getWhoLiked());
-            ps.setInt(2,like.getWhichPublication());
+            ps.setLong(1, like.getWhoLiked());
+            ps.setLong(2,like.getWhichPublication());
             ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
             return ps;
         });
+    }
+
+    public void deleteLikeOnPublication(Long id) {
+        String sql = "delete from liked where which_publication = ?";
+        jdbcTemplate.update(sql, id);
     }
 }

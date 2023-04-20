@@ -2,6 +2,7 @@ package com.example.microgram.dao;
 
 import com.example.microgram.entity.Follow;
 import com.example.microgram.entity.Publication;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,11 +14,12 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class PublicationDao extends BaseDao {
     public PublicationDao(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        super(jdbcTemplate);
+        super(jdbcTemplate, namedParameterJdbcTemplate);
     }
 
     @Override
@@ -40,7 +42,7 @@ public class PublicationDao extends BaseDao {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, publication.getImage());
             ps.setString(2, publication.getDescription());
-            ps.setInt(3, publication.getUserId());
+            ps.setLong(3, publication.getUserId());
             ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
             return ps;
         });
@@ -51,7 +53,7 @@ public class PublicationDao extends BaseDao {
 //        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Publication.class));
 //    }
     public void deleteById(Long publicationId) {
-        String sql = "delete from publications where id = ?";
+        String sql = "delete from publications p where p.id = ?";
         jdbcTemplate.update(sql, publicationId);
     }
 
@@ -95,4 +97,19 @@ public class PublicationDao extends BaseDao {
                 "where u = " + follow.getFollowing();
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Publication.class));
     }
+
+    public Optional<Publication> findById(Long id) {
+        String sql = "select * " +
+                "from publications " +
+                "where id = ?";
+        return Optional.ofNullable(DataAccessUtils.singleResult(
+                jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Publication.class), id)));
+    }
+
+    public List<Publication> getAllPublications() {
+        String sql = "select * from publications";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Publication.class));
+    }
 }
+
+//        this.jdbcTemplate.update("update table set name = ? where id = ?", name, id);
