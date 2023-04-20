@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Follow {
     private Long id;
-    private int follower;
-    private int following;
+    private Long follower;
+    private Long following;
     @JsonProperty("date_time")
     private LocalDateTime date;
 

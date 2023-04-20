@@ -2,6 +2,7 @@ package com.example.microgram.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,22 +21,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/publications/?").permitAll();
-
-        http.authorizeRequests().antMatchers("/publications/**").fullyAuthenticated();
-        http.authorizeRequests().antMatchers("/comments/**").fullyAuthenticated();
-        http.authorizeRequests().antMatchers("/addLikeOnPublication").fullyAuthenticated();
-        http.authorizeRequests().antMatchers("/followAction").fullyAuthenticated();
-
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/publications").fullyAuthenticated();
+        http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/publications").fullyAuthenticated();
 
         http.authorizeRequests()
                 .anyRequest()
                 .permitAll();
-
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.httpBasic();
+        http.httpBasic();//
         http.formLogin().disable().logout().disable();
         http.csrf().disable();
+        http.cors().disable();
     }
 
 }
