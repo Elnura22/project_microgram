@@ -26,9 +26,9 @@ public class UserDTO {
     private String name;
     private String account;
     private String email;
-    private java.lang.Integer counterPublication;
-    private java.lang.Integer counterFollower;
-    private java.lang.Integer counterFollowing;
+    private Long counterPublication;
+    private Long counterFollower;
+    private Long counterFollowing;
     private String role;
     private boolean enabled;
 }

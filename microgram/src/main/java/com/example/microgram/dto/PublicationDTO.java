@@ -26,6 +26,6 @@ public class PublicationDTO {
     private String image;
     private String description;
     @JsonProperty("user_id")
-    private int userId;
+    private Long userId;
     private LocalDateTime date;
 }

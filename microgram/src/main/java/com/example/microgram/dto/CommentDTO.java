@@ -25,9 +25,9 @@ public class CommentDTO {
     private Long id;
     private String text;
     @JsonProperty("publication_id")
-    private Integer publicationId;
+    private Long publicationId;
     @JsonProperty("user_id")
-    private Integer userId;
+    private Long userId;
     @JsonProperty("date_time")
     private LocalDateTime date;
 }

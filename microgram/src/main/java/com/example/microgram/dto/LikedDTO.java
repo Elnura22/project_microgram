@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 public class LikedDTO {
 
     public static LikedDTO from(Liked liked) {
-
         return builder()
                 .id(liked.getId())
                 .whoLiked(liked.getWhoLiked())
@@ -24,8 +23,8 @@ public class LikedDTO {
 
     private Long id;
     @JsonProperty("who_liked")
-    private int whoLiked;
+    private Long whoLiked;
     @JsonProperty("which_publication")
-    private int whichPublication;
+    private Long whichPublication;
     private LocalDateTime date;
 }

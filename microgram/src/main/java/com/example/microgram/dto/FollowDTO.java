@@ -1,7 +1,6 @@
 package com.example.microgram.dto;
 
 import com.example.microgram.entity.Follow;
-import com.example.microgram.entity.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -21,7 +20,7 @@ public class FollowDTO {
     }
 
     private Long id;
-    private int follower;
-    private int following;
+    private Long follower;
+    private Long following;
     private LocalDateTime date;
 }
