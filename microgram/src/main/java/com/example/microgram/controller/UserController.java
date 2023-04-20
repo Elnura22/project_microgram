@@ -47,12 +47,12 @@ public class UserController {
         return ResponseEntity.ok(service.registerNewUser(userDTO, password));
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password){
-        if (service.checkUserForLogin(email, password)){
-            return ResponseEntity.status(HttpStatus.OK).body("Successful login!");
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("You entered invalid email or password, try again.");
-    }
+//    @GetMapping("/login")
+//    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password){
+//        if (service.checkUserForLogin(email, password)){
+//            return ResponseEntity.status(HttpStatus.OK).body("Successful login!");
+//        }
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("You entered invalid email or password, try again.");
+//    }
 
 }
