@@ -3,19 +3,12 @@ package com.example.microgram.service;
 import com.example.microgram.dao.UserDao;
 import com.example.microgram.dto.UserDTO;
 import com.example.microgram.entity.User;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.sql.DataSource;
-import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,16 +36,16 @@ public class UserService implements UserDetailsService {
         return false;
     }
 
-    public boolean checkUserForLogin(String email, String password) {
-        var list = userDao.getUsers();
-        for (var user : list) {
-            if (user.getEmail().equalsIgnoreCase(email) &&
-                    user.getPassword().equalsIgnoreCase(password)) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    public boolean checkUserForLogin(String email, String password) {
+//        var list = userDao.getUsers();
+//        for (var user : list) {
+//            if (user.getEmail().equalsIgnoreCase(email) &&
+//                    user.getPassword().equalsIgnoreCase(password)) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
 
     public List<UserDTO> findByName(String name) {
@@ -78,9 +71,9 @@ public class UserService implements UserDetailsService {
                 .account(userDTO.getAccount())
                 .email(userDTO.getEmail())
                 .password(password)
-                .counterPublication(0)
-                .counterFollower(0)
-                .counterFollowing(0)
+                .counterPublication(0L)
+                .counterFollower(0L)
+                .counterFollowing(0L)
                 .role(userDTO.getRole())
                 .enabled(userDTO.isEnabled())
                 .build();
@@ -97,3 +90,11 @@ public class UserService implements UserDetailsService {
         return optUser.get();
     }
 }
+/*
+//fabrica
+//use switch case, not else-if
+//таблица истинности булевая алгебра
+
+пустой проект + в статик три фацла и пишем в джс
+скрипт точка джс
+*/

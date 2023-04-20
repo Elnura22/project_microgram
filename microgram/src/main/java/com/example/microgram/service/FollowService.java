@@ -15,24 +15,29 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class FollowService {
-    @Autowired
-    private FollowDao followDao;
-    private UserDao userDao;
+    private final FollowDao followDao;
+    private final UserDao userDao;
 
-    public FollowService(FollowDao followDao, UserDao userDao) {
-        this.followDao = followDao;
-        this.userDao = userDao;
-    }
 
-    public FollowDTO followAction(FollowDTO followDTO, Long id, Long id2) {
-        var follower = userDao.findUserById(id);
-        var following = userDao.findUserById(id2);
+    public FollowDTO followAction( Long id, String email) {
+        User follower = userDao.findUserByEmail(email).orElseThrow();
+        User following = userDao.findUserById(id).orElseThrow();
+
         Follow follow = Follow.builder()
-                .follower(follower.orElseThrow().getCounterFollower())
-                .following(following.orElseThrow().getCounterFollowing())
-                .date(followDTO.getDate())
+                .follower(follower.getId())
+                .following(following.getId())
+                .date(LocalDateTime.now())
                 .build();
+
+        if (follower.getId().equals(following.getId())) {
+            throw new RuntimeException("You can not subscribe on yourself.");
+        }
         followDao.save(follow);
+        follower.setCounterFollowing(follower.getCounterFollowing() + 1);
+        userDao.updateCounterFollowing(follower);
+        following.setCounterFollower(following.getCounterFollower() + 1);
+        userDao.updateCounterFollower(following);
         return FollowDTO.from(follow);
     }
+//write logic for checking \Is user follow?
 }
