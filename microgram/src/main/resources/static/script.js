@@ -483,13 +483,13 @@ function setTime() {
 
 async function commentHandler(e) {
     e.preventDefault();
-    const form = e.target;
-    const data = new FormData(form);
+    const data = new FormData(e.target);
     console.log(prepareJson(data));
+
     const newComment = {
         id: 1,
         text: data.get('comment'),
-        publicationId: 2,
+        publicationId: 1,
         userId: user.email,
         date: setTime()
     }

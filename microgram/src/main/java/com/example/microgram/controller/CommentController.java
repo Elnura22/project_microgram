@@ -29,7 +29,7 @@ public class CommentController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE  /*, path = "{id}"*/)
     public CommentDTO addComment(//@RequestBody CommentDTOSecond commentData,
-                                   @RequestParam("text") String text
+                                   @RequestParam("comment") String text
 //                                 @PathVariable Long id
                                  /*Authentication authentication*/) {
 //        UserDetails ud = (UserDetails) authentication.getPrincipal();
@@ -38,7 +38,7 @@ public class CommentController {
         CommentDTOSecond comment = CommentDTOSecond.builder()
                 .text(text)
                 .build();
-        return service.addComment(comment, id,  ud);
+        return service.addComment(comment);
     }
 
     @DeleteMapping("/{id}")

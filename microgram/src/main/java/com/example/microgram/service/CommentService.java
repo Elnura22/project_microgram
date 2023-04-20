@@ -27,7 +27,7 @@ public class CommentService {
     private final PublicationDao publicationDao;
 
 
-    public CommentDTO addComment(CommentDTOSecond commentData, Long id, String email) {
+    public CommentDTO addComment(CommentDTOSecond commentData) {
 //        User user = userDao.findUserByEmail(email).orElseThrow();
 //        Publication publication = publicationDao.findById(id).orElseThrow();
         Comment comment = Comment.builder()
@@ -35,7 +35,7 @@ public class CommentService {
                 .text(commentData.getText())
 //                .publicationId(publication.getId())
 //                .userId(user.getId())
-                .publicationId(2L)
+                .publicationId(1L)
                 .userId(1L)
                 .date(LocalDateTime.now())
                 .build();
