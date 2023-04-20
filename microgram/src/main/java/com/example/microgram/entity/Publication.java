@@ -17,7 +17,7 @@ public class Publication {
     private String image;
     private String description;
     @JsonProperty("user_id")
-    private int userId;
+    private Long userId;
 
     @JsonProperty("date_time")
     private LocalDateTime date;

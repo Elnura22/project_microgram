@@ -16,9 +16,9 @@ public class Comment {
     private Long id;
     private String text;
     @JsonProperty("publication_id")
-    private int publicationId;
+    private Long publicationId;
     @JsonProperty("user_id")
-    private int userId;
+    private Long userId;
     @JsonProperty("date_time")
     private LocalDateTime date;
 

@@ -23,11 +23,11 @@ public class User implements UserDetails {
     private String email;
     private String password;
     @JsonProperty("counter_publication")
-    private int counterPublication;
+    private Long counterPublication;
     @JsonProperty("counter_follower")
-    private int counterFollower;
+    private Long counterFollower;
     @JsonProperty("counter_following")
-    private int counterFollowing;
+    private Long counterFollowing;
 
     private String role;
     private boolean enabled = Boolean.TRUE;
@@ -39,7 +39,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return getName();
+        return getEmail();
     }
 
     @Override

@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
 public class Liked {
     private Long id;
     @JsonProperty("who_liked")
-    private int whoLiked;
+    private Long whoLiked;
     @JsonProperty("which_publication")
-    private int whichPublication;
+    private Long whichPublication;
     @JsonProperty("date_time")
     private LocalDateTime date;
 
