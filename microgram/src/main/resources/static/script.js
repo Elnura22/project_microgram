@@ -589,6 +589,7 @@ function createRegisterForm() {
     registerForm.append(password);
     registerForm.append(buttonRegister);
     document.body.append(registerForm);
+
 }
 const registerButton = document.getElementById('registerButton');
 const registerForm = document.getElementById('register-form');
@@ -625,6 +626,7 @@ async function onRegisterHandler(e) {
         enabled: true,
         isAuthorised: true
     }
+    registerForm.reset()
     console.log(user);
     await fetch('http://localhost:8090/users/register/', {
         mode: 'no-cors',
@@ -639,8 +641,3 @@ async function onRegisterHandler(e) {
 
 const registrationForm = document.getElementById('register-form');
 registrationForm.addEventListener('submit', onRegisterHandler);
-
-
-
-
-
