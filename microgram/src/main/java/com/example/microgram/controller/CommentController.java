@@ -27,7 +27,7 @@ public class CommentController {
         return new ResponseEntity<>(service.getAllComments(), HttpStatus.OK);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE  /*, path = "{id}"*/)
+    @PostMapping//(consumes = MediaType.APPLICATION_JSON_VALUE  /*, path = "{id}"*/)
     public CommentDTO addComment(//@RequestBody CommentDTOSecond commentData,
                                    @RequestParam("comment") String text
 //                                 @PathVariable Long id
@@ -38,7 +38,7 @@ public class CommentController {
         CommentDTOSecond comment = CommentDTOSecond.builder()
                 .text(text)
                 .build();
-        return service.addComment(comment);
+        return service.addComment(comment, ud);
     }
 
     @DeleteMapping("/{id}")

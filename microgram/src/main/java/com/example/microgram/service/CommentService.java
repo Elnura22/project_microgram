@@ -27,7 +27,7 @@ public class CommentService {
     private final PublicationDao publicationDao;
 
 
-    public CommentDTO addComment(CommentDTOSecond commentData) {
+    public CommentDTO addComment(CommentDTOSecond commentData, String email) {
 //        User user = userDao.findUserByEmail(email).orElseThrow();
 //        Publication publication = publicationDao.findById(id).orElseThrow();
         Comment comment = Comment.builder()
