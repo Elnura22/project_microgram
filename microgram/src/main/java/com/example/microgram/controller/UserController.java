@@ -1,5 +1,7 @@
 package com.example.microgram.controller;
+
 import com.example.microgram.dto.UserDTO;
+import com.example.microgram.dto.UserDTOSecond;
 import com.example.microgram.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,34 +20,50 @@ public class UserController {
 
 
     @GetMapping("/getList")
-    public ResponseEntity<List<UserDTO>> users(){
+    public ResponseEntity<List<UserDTO>> users() {
         return new ResponseEntity<>(service.getListOfUsers(), HttpStatus.OK);
     }
 
 
     @GetMapping("/userByName")
-    public ResponseEntity<List<UserDTO>> userByName(@RequestParam String name){
+    public ResponseEntity<List<UserDTO>> userByName(@RequestParam String name) {
         return new ResponseEntity<>(service.findByName(name), HttpStatus.OK);
     }
 
     @GetMapping("/userByEmail")
-    public ResponseEntity<List<UserDTO>> userByEmail(@RequestParam String email){
+    public ResponseEntity<List<UserDTO>> userByEmail(@RequestParam String email) {
         return new ResponseEntity<>(service.findByEmail(email), HttpStatus.OK);
     }
 
 
     @GetMapping("/userByAccount")
-    public ResponseEntity<List<UserDTO>> userByAccount(@RequestParam String account){
+    public ResponseEntity<List<UserDTO>> userByAccount(@RequestParam String account) {
         return new ResponseEntity<>(service.findByAccount(account), HttpStatus.OK);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registration(@RequestBody UserDTO userDTO, @RequestParam String password){
-        if (service.userExists(userDTO.getName())) {
+    public ResponseEntity<?> registration(/*@RequestBody UserDTO userDTO,*/
+            @RequestParam("name") String name,
+            @RequestParam("accountName") String accountName,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password) {
+//        if (service.userExists(userDTO.getName())) {
+//            return ResponseEntity.ok(HttpStatus.BAD_REQUEST);
+//        }
+//        return ResponseEntity.ok(service.registerNewUser(userDTO, password));
+        UserDTOSecond userDTOSecond = UserDTOSecond.builder()
+                .name(name)
+                .account(accountName)
+                .email(email)
+                .build();
+
+        if (service.userExists(email)) {
             return ResponseEntity.ok(HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.ok(service.registerNewUser(userDTO, password));
+//        return ResponseEntity.ok((service.registerNewUser(name, accountName, email, password)));
+        return ResponseEntity.ok((service.registerNewUser(userDTOSecond, password)));
     }
+
 
 //    @GetMapping("/login")
 //    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password){

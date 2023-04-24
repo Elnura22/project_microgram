@@ -2,6 +2,7 @@ package com.example.microgram.service;
 
 import com.example.microgram.dao.UserDao;
 import com.example.microgram.dto.UserDTO;
+import com.example.microgram.dto.UserDTOSecond;
 import com.example.microgram.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -64,20 +65,34 @@ public class UserService implements UserDetailsService {
         return userList.stream().map(UserDTO::from).collect(Collectors.toList());
     }
 
-    public UserDTO registerNewUser(UserDTO userDTO, String password) {
+    public UserDTO registerNewUser(/*UserDTO userDTO,*/
+            UserDTOSecond userDTOSecond,
+            String password) {
         password = passwordEncoder.encode(password);
-        var user = User.builder()
-                .name(userDTO.getName())
-                .account(userDTO.getAccount())
-                .email(userDTO.getEmail())
+        User user = User.builder()
+                .name(userDTOSecond.getName())
+                .account(userDTOSecond.getAccount())
+                .email(userDTOSecond.getEmail())
                 .password(password)
                 .counterPublication(0L)
                 .counterFollower(0L)
                 .counterFollowing(0L)
-                .role(userDTO.getRole())
-                .enabled(userDTO.isEnabled())
+                .role("user")
+                .enabled(true)
                 .build();
         userDao.save(user);
+//        var user = User.builder()
+//                .name(userDTO.getName())
+//                .account(userDTO.getAccount())
+//                .email(userDTO.getEmail())
+//                .password(password)
+//                .counterPublication(0L)
+//                .counterFollower(0L)
+//                .counterFollowing(0L)
+//                .role(userDTO.getRole())
+//                .enabled(userDTO.isEnabled())
+//                .build();
+//        userDao.save(user);
         return UserDTO.from(user);
     }
 
