@@ -27,10 +27,10 @@ public class UserService implements UserDetailsService {
         return userList.stream().map(UserDTO::from).collect(Collectors.toList());
     }
 
-    public boolean userExists(String name) {
+    public boolean userExists(String email) {
         List<UserDTO> list = getListOfUsers();
         for (var user : list) {
-            if (user.getName().equalsIgnoreCase(name)) {
+            if (user.getEmail().equalsIgnoreCase(email)) {
                 return true;
             }
         }

@@ -58,10 +58,9 @@ public class UserController {
                 .build();
 
         if (service.userExists(email)) {
-            return ResponseEntity.ok(HttpStatus.BAD_REQUEST);
-        }
+            return ResponseEntity.badRequest().build();
+        }else return ResponseEntity.ok((service.registerNewUser(userDTOSecond, password)));
 //        return ResponseEntity.ok((service.registerNewUser(name, accountName, email, password)));
-        return ResponseEntity.ok((service.registerNewUser(userDTOSecond, password)));
     }
 
 

@@ -214,7 +214,7 @@ function addPost(postElement) {
 function addClickLike(like) {
     // const posts = document.querySelectorAll('all-posts');
     // posts.forEach(post => {
-    //     conts likeButton = document
+    //     const likeButton = document
     // })
     like.addEventListener('click', function () {
         const like = document.querySelector('.like');
@@ -433,7 +433,8 @@ async function postHandler(e) {
         mode: 'no-cors',
         method: 'POST',
         body: data
-    })
+    });
+
 }
 
 function setTime() {
@@ -540,6 +541,7 @@ function createRegisterForm() {
     registerForm.id = 'register-form';
     registerForm.style.borderStyle = 'solid';
     registerForm.style.borderColor = 'green';
+    registerForm.style.display = 'none';
 
     const name = document.createElement('input');
     name.type = 'text';
@@ -605,6 +607,7 @@ async function onRegisterHandler(e) {
     const form = e.target;
     const data = new FormData(form);
     console.log(prepareJson(data));
+
     const name = data.get('name');
     const accountName = data.get('accountName');
     const email = data.get('email');
@@ -632,11 +635,11 @@ async function onRegisterHandler(e) {
             'Content-Type': 'application/json'
         }
     });
-    registerForm.value = '';
 }
 
 const registrationForm = document.getElementById('register-form');
 registrationForm.addEventListener('submit', onRegisterHandler);
+
 
 
 
