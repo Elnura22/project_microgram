@@ -1,4 +1,3 @@
-//#1 Создайте объект пользователя.
 const user = {
     id: 1,
     name: "Elnura",
@@ -11,10 +10,7 @@ const user = {
     enabled: true,
     isAuthorised: true
 };
-// console.log(user);
 
-
-//#2 Создайте объект поста.
 const post = {
     id: 1,
     image: "https://media-cdn.tripadvisor.com/media/photo-s/1a/64/49/24/caption.jpg",
@@ -23,9 +19,7 @@ const post = {
     date: "22.11.2022",
     isLiked: true
 };
-// console.log(post);
 
-//#3 Создайте объект комментария.
 const comment = {
     id: 1,
     text: "some text",
@@ -33,18 +27,13 @@ const comment = {
     userId: user.email,
     date: "22.11.2022"
 };
-// console.log(comment);
 
 
-//#4 Работа с массивами.
 const posts = [];
 
 function addPostToArray() {
     posts.push(post);
 }
-
-// addPostToArray();
-// console.log(posts);
 
 
 //#5 Работа с функциями.
@@ -67,35 +56,6 @@ function changePostState(post) {
     return post;
 }
 
-// const result = changePostState(post);
-// console.log(result);
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//NEW HOMEWORK-58
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-//#TASK 1  showSplashScreen/hideSplashScreen
 function showSplashScreen() {
     const splashScreen = document.createElement('div');
     splashScreen.id = 'splash';
@@ -115,7 +75,6 @@ function showSplashScreen() {
 showSplashScreen();
 
 
-//#TASK 2    createCommentElement(comment)
 function createCommentElement(comment) {
     const commentElement = document.createElement('div');
     commentElement.classList.add('comment');
@@ -137,7 +96,6 @@ function createCommentElement(comment) {
     return commentElement;
 }
 
-//#TASK 3    createPostElement(post)
 function createPostElement(post) {
     const postElement = document.createElement('div');
     postElement.classList.add('post');
@@ -170,7 +128,6 @@ function createPostElement(post) {
     const userEmail = document.createElement('p');
     userEmail.textContent = post.userId;
 
-    ////////////////////////////////////////////////////////////////////////////////////
     const footer = document.createElement('div_footer');
     footer.style.display = 'flex';
     footer.style.paddingTop = '20px';
@@ -181,6 +138,7 @@ function createPostElement(post) {
     like.innerHTML = `<span class="h3 mx-2 muted">
           <i class="far fa-heart" style="color: dimgrey; font-size: 30px"></i>
         </span>`;
+
     addClickLike(like);
 
     const commentIcon = document.createElement('div');
@@ -244,25 +202,20 @@ function createMainDiv(child) {
 
 navbar();
 createPostForm();
+createRegisterForm();
 createMainDiv(createPostElement(post));
 createCommentForm();
-// const  text = document.getElementById('')
 
-
-//#TASK 4    addPost(postElement)
 function addPost(postElement) {
     const posts = document.getElementById('all-posts');
     posts.append(postElement);
 }
 
-// addPost(createPostElement(post));
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-//HOMEWORK-59
-
-//#TASK1
 function addClickLike(like) {
+    // const posts = document.querySelectorAll('all-posts');
+    // posts.forEach(post => {
+    //     conts likeButton = document
+    // })
     like.addEventListener('click', function () {
         const like = document.querySelector('.like');
         if (like.getAttribute('like') === null) {
@@ -334,8 +287,16 @@ function addBookmark(bookmark) {
 function navbar() {
     const navbar = document.createElement('nav');
     navbar.classList.add('navbar');
-    navbar.innerHTML = ` <a class="navbar-brand" href="#"><i class="bi bi-plus-square" id="plus"></i></a>`;
-    navbar.style.borderColor = 'white';
+
+    const plus = document.createElement('button');
+    plus.innerHTML = ` <a class="navbar-brand" href="#"><i class="bi bi-plus-square" id="plus"></i></a>`;
+    plus.style.borderColor = 'white';
+
+    const register = document.createElement('button');
+    register.innerHTML = `<a class="navbar-brand" href="#"><i class="bi bi-person-plus" id="registerButton"></i></a>`;
+    register.style.borderColor = 'white';
+    navbar.append(plus);
+    navbar.append(register);
     document.body.append(navbar);
 
 }
@@ -377,11 +338,12 @@ function createCommentForm() {
 function createPostForm() {
     const form = document.createElement('form');
     form.id = 'post-form';
+    form.style.borderStyle = 'solid';
+    form.style.borderColor = 'red';
 
     const inputImage = document.createElement('input');
     inputImage.type = 'file';
     inputImage.name = 'image';
-
     inputImage.style.display = 'block';
     inputImage.style.paddingBlock = '10px';
     inputImage.style.paddingInline = '5px';
@@ -411,8 +373,8 @@ function createPostForm() {
     form.append(inputIdUser);
     form.append(buttonSubmit);
     document.body.append(form);
-
 }
+
 
 const postPlusIcon = document.getElementById('plus');
 const postForm = document.getElementById('post-form');
@@ -421,6 +383,8 @@ postForm.style.display = 'none';
 const commentIcon = document.getElementById('commentIcon');
 const commentForm = document.getElementById('comment-form');
 commentForm.style.display = 'none';
+
+
 postPlusIcon.addEventListener('click', function () {
     if (postForm.style.display === 'none') {
         postForm.style.display = 'block';
@@ -465,7 +429,7 @@ async function postHandler(e) {
     console.log(newPost);
     addPost(createPostElement(newPost));
 
-    await fetch('http://localhost:8088/publications/', {
+    await fetch('http://localhost:8090/publications/', {
         mode: 'no-cors',
         method: 'POST',
         body: data
@@ -497,12 +461,9 @@ async function commentHandler(e) {
     const comment = document.getElementById('commentsBlock');
     comment.append(createCommentElement(newComment));
 
-    await fetch('http://localhost:8088/comments/', {
+    await fetch('http://localhost:8090/comments/', {
         mode: 'no-cors',
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
         body: data
     })
 }
@@ -532,9 +493,8 @@ allPosts.style.marginInline = '5px';
 allForm.append(allPosts);
 document.body.append(allForm);
 
-
 async function getPosts(e) {
-    await fetch('http://localhost:8088/publications/allPosts/')
+    await fetch('http://localhost:8090/publications/allPosts/')
         .then(response => response.json())
         .then(posts => {
             posts.forEach(post => {
@@ -560,14 +520,13 @@ allFormComments.append(allCommentsShow);
 document.body.append(allFormComments);
 
 async function getComments(e) {
-    await fetch('http://localhost:8088/comments/allComments/')
+    await fetch('http://localhost:8090/comments/allComments/')
         .then(response => response.json())
         .then(comments => {
             comments.forEach(comment => {
                 createCommentElement(comment);
                 const newComment = document.getElementById('commentsBlock');
                 newComment.append(comment);
-                // console.log(comments);
             })
         })
         .catch(error => console.error(error));
@@ -575,13 +534,110 @@ async function getComments(e) {
 
 allFormComments.addEventListener('submit', getComments);
 
-// all.onsubmit = async (e) => {
-//     e.preventDefault();
-//     let response = await fetch(BASE_URL + '/publications', {
-//         method: 'POST',
-//         body: new FormData(postForm)
-//     });
-//
-//     let result = await response.json();
-//     alert(result.message);
-// };
+//registration hw-62
+function createRegisterForm() {
+    const registerForm = document.createElement('form');
+    registerForm.id = 'register-form';
+    registerForm.style.borderStyle = 'solid';
+    registerForm.style.borderColor = 'green';
+
+    const name = document.createElement('input');
+    name.type = 'text';
+    name.name = 'name';
+    name.placeholder = 'Введите имя';
+    name.style.display = 'block';
+    name.style.paddingBlock = '10px';
+    name.style.paddingInline = '5px';
+
+    const accountName = document.createElement('input');
+    accountName.type = 'text';
+    accountName.name = 'accountName';
+    accountName.placeholder = 'Введите логин';
+    accountName.style.display = 'block';
+    accountName.style.paddingBlock = '10px';
+    accountName.style.paddingInline = '5px';
+
+    const email = document.createElement('input');
+    email.type = 'text';
+    email.name = 'email';
+    email.placeholder = 'Введите почту';
+    email.style.display = 'block';
+    email.style.paddingBlock = '10px';
+    email.style.paddingInline = '5px';
+
+    const password = document.createElement('input');
+    password.type = 'text';
+    password.name = 'password';
+    password.style.display = 'block';
+    password.placeholder = 'Введите пароль';
+    password.style.marginBlock = '10px';
+    password.style.marginInline = '5px';
+
+    const buttonRegister = document.createElement('button');
+    buttonRegister.id = 'button-register';
+    buttonRegister.type = 'submit';
+    buttonRegister.textContent = 'отправить';
+    buttonRegister.style.marginBlock = '10px';
+    buttonRegister.style.marginInline = '5px';
+    buttonRegister.style.display = 'block';
+
+    registerForm.append(name);
+    registerForm.append(accountName);
+    registerForm.append(email);
+    registerForm.append(password);
+    registerForm.append(buttonRegister);
+    document.body.append(registerForm);
+}
+const registerButton = document.getElementById('registerButton');
+const registerForm = document.getElementById('register-form');
+
+registerButton.addEventListener('click', function () {
+    if (registerForm.style.display === 'none') {
+        registerForm.style.display = 'block';
+    } else {
+        registerForm.style.display = 'none';
+    }
+});
+
+
+async function onRegisterHandler(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    console.log(prepareJson(data));
+    const name = data.get('name');
+    const accountName = data.get('accountName');
+    const email = data.get('email');
+    const password = data.get('password');
+
+    const user = {
+        id: 1,
+        name: name,
+        account: accountName,
+        email: email,
+        password: password,
+        counterPublication: 0,
+        counterFollower: 0,
+        counterFollowing: 0,
+        enabled: true,
+        isAuthorised: true
+    }
+    console.log(user);
+    await fetch('http://localhost:8090/users/register/', {
+        mode: 'no-cors',
+        method: 'POST',
+        cache: 'no-cache',
+        body: data,
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    registerForm.value = '';
+}
+
+const registrationForm = document.getElementById('register-form');
+registrationForm.addEventListener('submit', onRegisterHandler);
+
+
+
+
