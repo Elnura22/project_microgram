@@ -32,12 +32,12 @@ public class PublicationService {
     private final CommentDao commentDao;
     private final LikedDao likedDao;
 
-//сохраняем в базе массив байтов, мультипартфайл достаем айди картинки,
-    // как передать логин и пароль через скрипт джс при запросе http basic
+    private final ImageService imageService;
+
     public PublicationDTO addPublication(PublicationDTOSecond publicationDTOSecond,
                                          MultipartFile file,
                                          String email) throws IOException {
-        String route = "/" + saveFile(file);
+        String route = "/" + imageService.saveImageToFile(file);
 //        User user = userDao.findUserByEmail(email).orElseThrow();
         Publication publication = Publication.builder()
                 .id(1L)
@@ -52,16 +52,6 @@ public class PublicationService {
 //        userDao.update(user);
 
         return PublicationDTO.from(publication);
-    }
-
-    public static String saveFile(MultipartFile file) throws IOException {
-        File newFile = new File("microgram\\src\\main\\resources\\static\\images\\" +
-//                UUID.randomUUID().toString().toLowerCase() +
-                file.getOriginalFilename());
-        FileOutputStream fileOutputStream = new FileOutputStream(newFile);
-        fileOutputStream.write(file.getBytes());
-        fileOutputStream.close();
-        return newFile.getPath();
     }
 
     public boolean deletePublication(Long id, String email) {

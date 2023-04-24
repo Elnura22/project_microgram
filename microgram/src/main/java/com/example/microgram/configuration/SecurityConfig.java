@@ -21,8 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/publications").fullyAuthenticated();
-        http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/publications").fullyAuthenticated();
+//        http.authorizeRequests().antMatchers(HttpMethod.POST, "/publications").fullyAuthenticated();
+//        http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/publications").fullyAuthenticated();
 
         http.authorizeRequests()
                 .anyRequest()
