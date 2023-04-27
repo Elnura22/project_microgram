@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -59,14 +60,14 @@ public class UserController {
 
         if (service.userExists(email)) {
             return ResponseEntity.badRequest().build();
-        }else return ResponseEntity.ok((service.registerNewUser(userDTOSecond, password)));
-//        return ResponseEntity.ok((service.registerNewUser(name, accountName, email, password)));
+        } else return ResponseEntity.ok((service.registerNewUser(userDTOSecond, password)));
     }
 
 
 //    @GetMapping("/login")
-//    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password){
-//        if (service.checkUserForLogin(email, password)){
+//    public ResponseEntity<?> login(@RequestParam String email,
+//                                   @RequestParam String password) {
+//        if (service.checkUs-erForLogin(email, password)) {
 //            return ResponseEntity.status(HttpStatus.OK).body("Successful login!");
 //        }
 //        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("You entered invalid email or password, try again.");

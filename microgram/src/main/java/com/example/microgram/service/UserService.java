@@ -105,11 +105,3 @@ public class UserService implements UserDetailsService {
         return optUser.get();
     }
 }
-/*
-//fabrica
-//use switch case, not else-if
-//таблица истинности булевая алгебра
-
-пустой проект + в статик три фацла и пишем в джс
-скрипт точка джс
-*/
