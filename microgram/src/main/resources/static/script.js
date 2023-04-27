@@ -43,7 +43,8 @@ function changeUserState(user) {
 }
 
 const test = changeUserState(user);
-console.log(test);
+
+// console.log(test);
 
 function changePostState(post) {
     for (let i = 0; i < posts.length; i++) {
@@ -56,24 +57,70 @@ function changePostState(post) {
     return post;
 }
 
+window.addEventListener('load', checkAuthority);
+
 function showSplashScreen() {
     const splashScreen = document.createElement('div');
     splashScreen.id = 'splash';
-    splashScreen.innerHTML = '<button type="button" id="button" class="btn btn-info" style="font-size: 30px; border-color: black; border-radius: 5px; font-family: Book Antiqua">TAP HERE TO LOGIN</button>';
+    // splashScreen.innerHTML = '<button type="button" id="button" class="btn btn-info" style="font-size: 30px; border-color: black; border-radius: 5px; font-family: Book Antiqua">TAP HERE TO LOGIN</button>';
     splashScreen.setAttribute("style", "background-color: #D2B48C; width: 100%;" +
         "height: 400%; position: absolute;top:0;bottom:0;left:0;right:0;margin:auto; " +
         "font-family:courier new;font-size:75px;font-weight:inherit;display: flex; align-items: center; " +
         "justify-content: center; text-align: center");
+
+    // splashScreen.style.display = 'block';
+    splashScreen.innerHTML = `<form id="login-form">
+  <h5>WElCOME</h5>
+  <input type="text" name="username" class="form-control mb-1" placeholder="Email" required>
+  <input type="password" name="password" class="form-control mb-1" placeholder="Password" required>
+  <button id="button-login" class="btn btn-outline-primary btn-block">Login</button>
+</form>`;
     document.body.append(splashScreen);
 
-    const splash = document.getElementById('button');
-    splash.onclick = (event) => {
-        splashScreen.remove();
-    };
 }
 
-showSplashScreen();
 
+function checkAuthority() {
+    if (localStorage.getItem('user')) {
+        hideSplashScreen();
+    } else {
+        onLoginHandler();
+    }
+}
+
+function hideSplashScreen() {
+    const splashScreen = document.getElementById('splash');
+    splashScreen.remove();
+}
+
+function onLoginHandler() {
+    showSplashScreen();
+
+    const loginForm = document.getElementById('login-form');
+    loginForm.addEventListener('submit', function (event){
+        event.preventDefault();
+        const form = event.target;
+        const userFormData = new FormData(form);
+        const user = Object.fromEntries(userFormData);
+
+        saveUser(user);
+
+        const userGet = JSON.parse(localStorage.getItem('user'));
+        const name = document.getElementById('name-login');
+
+        name.style.fontSize = '20px';
+        name.style.color = 'green'
+        name.append(userGet.username);
+        document.body.prepend(name);
+        hideSplashScreen()
+    });
+
+}
+
+function saveUser(user) {
+    const userAsJSON = JSON.stringify(user)
+    localStorage.setItem('user', userAsJSON);
+}
 
 function createCommentElement(comment) {
     const commentElement = document.createElement('div');
@@ -295,10 +342,31 @@ function navbar() {
     const register = document.createElement('button');
     register.innerHTML = `<a class="navbar-brand" href="#"><i class="bi bi-person-plus" id="registerButton"></i></a>`;
     register.style.borderColor = 'white';
+
+    const nameLogin = document.createElement('span');
+    nameLogin.id = 'name-login';
+    nameLogin.textContent = 'authorized user: ';
+    nameLogin.style.paddingLeft = '250px';
+
+    const logout = document.createElement('button');
+    logout.innerHTML = `<a class="navbar-brand" href="#"><i class="bi bi-box-arrow-right" id="logoutButton"></i></a>`;
+    logout.style.borderColor = 'white';
+
     navbar.append(plus);
     navbar.append(register);
+    navbar.append(logout);
+    navbar.append(nameLogin);
+
     document.body.append(navbar);
 
+}
+
+const logoutAction = document.getElementById('logoutButton');
+logoutAction.addEventListener('click', clearStorage);
+
+function clearStorage() {
+    localStorage.clear();
+    showSplashScreen();
 }
 
 function createCommentForm() {
@@ -483,7 +551,7 @@ function prepareJson(formData) {
 
 const allForm = document.createElement('form');
 const allPosts = document.createElement('button');
-allPosts.id = 'button_submit';
+allPosts.id = 'button_submit_posts';
 allPosts.type = 'submit';
 allPosts.textContent = 'all posts'
 allPosts.style.display = 'block';
@@ -509,7 +577,7 @@ allForm.addEventListener('submit', getPosts);
 
 const allFormComments = document.createElement('form');
 const allCommentsShow = document.createElement('button');
-allCommentsShow.id = 'button_submit';
+allCommentsShow.id = 'button_submit_comments';
 allCommentsShow.type = 'submit';
 allCommentsShow.textContent = 'all posts'
 allCommentsShow.style.display = 'block';
@@ -591,6 +659,7 @@ function createRegisterForm() {
     document.body.append(registerForm);
 
 }
+
 const registerButton = document.getElementById('registerButton');
 const registerForm = document.getElementById('register-form');
 
@@ -641,3 +710,15 @@ async function onRegisterHandler(e) {
 
 const registrationForm = document.getElementById('register-form');
 registrationForm.addEventListener('submit', onRegisterHandler);
+
+// console.log(JSON.stringify(user));
+// await fetch('http://localhost:8090/login/', {
+//     mode: 'no-cors',
+//     method: 'POST',
+//     cache: 'no-cache',
+//     body: JSON.stringify(user),
+//     headers: {
+//         'Content-Type': 'application/json'
+//     }
+// });
+// localStorage.setItem('ls-user',JSON.stringify(user));
