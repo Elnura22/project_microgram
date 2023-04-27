@@ -37,7 +37,7 @@ public class PublicationController {
     public PublicationDTO addPublication( // @RequestBody PublicationDTOSecond publicationDTOSecond,
                                          @RequestParam("description") String description,
                                          @RequestParam("image") MultipartFile file //id,
-                                         /*Principal authentication*/) throws IOException {
+                                         /*Authentication authentication*/) throws IOException {
 //        String ud = authentication.getName();
         String ud= "first";
         PublicationDTOSecond publicationDTOSecond = PublicationDTOSecond.builder()
